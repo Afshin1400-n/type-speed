@@ -11,6 +11,7 @@ export default function Home() {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
+   const focusRef = useRef(null);
   const [word ,setWord] =useState("");
   const [inputValue ,setInputValue] =useState("");
 
@@ -30,13 +31,22 @@ export default function Home() {
   const startTimer = () => {
     if (isRunning) return;
 
+
     setIsRunning(true);
     const startTime = Date.now() - time;
 
     intervalRef.current = setInterval(() => {
       setTime(Date.now() - startTime);
     }, 10);
+
+setTimeout(() => {
+      if (focusRef.current) {
+        focusRef.current.focus();
+      }
+    }, 50); 
+
   };
+
 
   const stopTimer = () => {
     clearInterval(intervalRef.current);
@@ -83,6 +93,7 @@ export default function Home() {
 
         {/* اینپوت */}
     <Input 
+    ref={focusRef} 
   value={inputValue} 
   onChange={setInputValue}
   // disabled={!isRunning && !isFinished}

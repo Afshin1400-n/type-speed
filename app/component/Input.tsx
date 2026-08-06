@@ -1,12 +1,13 @@
 "use client";
 
-function Input({ value, onChange, disabled = false }) {
+function Input({ ref ,value, onChange, disabled = false }) {
   return (
     <div className="mb-6">
       <label className="text-gray-600 text-sm block mb-2">
         📝 کلمه را تایپ کن:
       </label>
       <input
+      ref={ref}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
