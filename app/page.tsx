@@ -1,13 +1,27 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Btn from "./component/Btn";
 import Timer from "./component/Timer";
+import Word from "./component/Word";
+import { random } from 'word-lib';
 
 export default function Home() {
   // ✅ Stateها اینجا تعریف میشن
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
+  const [word ,setWord] =useState("")
+
+
+ // تابع تولید کلمه جدید
+  const generateNewWord = () => {
+    const newWord = random({ maxLength: 5 });
+    setWord(newWord);
+  };
+
+  useEffect(() => {
+    generateNewWord();
+  }, []);
 
   // ✅ توابع کنترل تایمر اینجا تعریف میشن
   const startTimer = () => {
@@ -30,6 +44,7 @@ export default function Home() {
     clearInterval(intervalRef.current);
     setIsRunning(false);
     setTime(0);
+    generateNewWord();
   };
 
   const formatTime = (milliseconds) => {
@@ -44,6 +59,8 @@ export default function Home() {
     )}.${String(centiseconds).padStart(2, "0")}`;
   };
 
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20">
@@ -56,14 +73,7 @@ export default function Home() {
         </p>
 
         {/* کلمه هدف */}
-        <div className="bg-indigo-50 rounded-xl p-4 mb-6 text-center border-2 border-dashed border-indigo-200">
-          <span className="text-gray-500 text-sm block mb-1">
-            کلمه مورد نظر:
-          </span>
-          <span className="text-2xl font-bold text-indigo-700 tracking-wider">
-            پایتون
-          </span>
-        </div>
+      <Word word={word}/>
 
         {/* ✅ تایمر - دریافت time و formatTime به‌صورت props */}
         <Timer time={time} formatTime={formatTime} />
