@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Btn from "./component/Btn";
 import Timer from "./component/Timer";
 import Word from "./component/Word";
+import Input from "./component/Input";
 import { random } from 'word-lib';
 
 export default function Home() {
@@ -10,7 +11,9 @@ export default function Home() {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
-  const [word ,setWord] =useState("")
+  const [word ,setWord] =useState("");
+  const [inputValue ,setInputValue] =useState("");
+
 
 
  // تابع تولید کلمه جدید
@@ -79,16 +82,11 @@ export default function Home() {
         <Timer time={time} formatTime={formatTime} />
 
         {/* اینپوت */}
-        <div className="mb-6">
-          <label className="text-gray-600 text-sm block mb-2">
-            📝 کلمه را تایپ کن:
-          </label>
-          <input
-            type="text"
-            placeholder="کلمه را اینجا بنویس..."
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all outline-none text-lg text-gray-600"
-          />
-        </div>
+    <Input 
+  value={inputValue} 
+  onChange={setInputValue}
+  // disabled={!isRunning && !isFinished}
+/>
 
         {/* ✅ دکمه‌ها - دریافت توابع به‌صورت props */}
         <Btn
