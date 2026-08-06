@@ -14,6 +14,7 @@ export default function Home() {
    const focusRef = useRef(null);
   const [word ,setWord] =useState("");
   const [inputValue ,setInputValue] =useState("");
+  const [isDisable, setisDisable] = useState(true);
 
 
 
@@ -30,7 +31,7 @@ export default function Home() {
   // ✅ توابع کنترل تایمر اینجا تعریف میشن
   const startTimer = () => {
     if (isRunning) return;
-
+setisDisable(false)
 
     setIsRunning(true);
     const startTime = Date.now() - time;
@@ -96,6 +97,7 @@ setTimeout(() => {
     ref={focusRef} 
   value={inputValue} 
   onChange={setInputValue}
+  disabled={isDisable || !isRunning}
   // disabled={!isRunning && !isFinished}
 />
 
@@ -105,6 +107,7 @@ setTimeout(() => {
           stopTimer={stopTimer}
           resetTimer={resetTimer}
           isRunning={isRunning}
+        
         />
 
         {/* رکوردها */}

@@ -1,6 +1,6 @@
 "use client";
 
-function Input({ ref ,value, onChange, disabled = false }) {
+function Input({ ref ,value, onChange, disabled  }) {
   return (
     <div className="mb-6">
       <label className="text-gray-600 text-sm block mb-2">
