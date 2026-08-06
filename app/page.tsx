@@ -1,3 +1,6 @@
+"use client";
+import Timer from "./component/Timer";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -16,12 +19,7 @@ export default function Home() {
         </div>
 
         {/* تایمر */}
-        <div className="text-center mb-6">
-          <span className="text-gray-500 text-sm block mb-1">⏱️ زمان</span>
-          <div className="text-6xl font-mono font-bold text-indigo-600 bg-indigo-50 rounded-xl py-3 px-4 inline-block min-w-[150px]">
-            ۰۰:۳۰
-          </div>
-        </div>
+      <Timer />
 
         {/* اینپوت */}
         <div className="mb-6">
