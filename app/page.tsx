@@ -52,6 +52,7 @@ setTimeout(() => {
   const stopTimer = () => {
     clearInterval(intervalRef.current);
     setIsRunning(false);
+    setisDisable(true)
   };
 
   const resetTimer = () => {
@@ -59,6 +60,7 @@ setTimeout(() => {
     setIsRunning(false);
     setTime(0);
     generateNewWord();
+    setisDisable(true)
   };
 
   const formatTime = (milliseconds) => {
@@ -97,7 +99,7 @@ setTimeout(() => {
     ref={focusRef} 
   value={inputValue} 
   onChange={setInputValue}
-  disabled={isDisable || !isRunning}
+  disabled={isDisable}
   // disabled={!isRunning && !isFinished}
 />
 
