@@ -1,11 +1,11 @@
 "use client";
 
-function Btn({ startTimer, stopTimer, resetTimer, isRunning }) {
+function Btn({ startTimer, stopTimer, resetTimer, isRunning ,isFinished }) {
   return (
     <div className="grid grid-cols-3 gap-3 mb-8">
       <button
         onClick={startTimer}
-        disabled={isRunning}
+        disabled={isRunning || isFinished}
         className="bg-green-500 hover:bg-green-600 active:scale-95 
           text-white font-bold py-3 px-4 rounded-xl
           transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"

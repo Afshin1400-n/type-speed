@@ -10,12 +10,14 @@ export default function Home() {
   // ✅ Stateها اینجا تعریف میشن
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
   const intervalRef = useRef(null);
   const focusRef = useRef(null);
   const [word ,setWord] =useState("");
   const [inputValue ,setInputValue] =useState("");
   const [isDisable, setisDisable] = useState(true);
   const [record, setRecord] = useState([]);
+  const [colors, setColors] = useState("gray");
 
 
 
@@ -27,14 +29,19 @@ export default function Home() {
 
   useEffect(() => {
     generateNewWord();
+    setisDisable(true);
+    setIsFinished(false);
+    setIsRunning(false)
   }, []);
 
   // ✅ توابع کنترل تایمر اینجا تعریف میشن
   const startTimer = () => {
-    if (isRunning) return;
-setisDisable(false)
+  if (isRunning || isFinished) return; // ← اگه در حال اجرا یا تموم شده، کاری نکن
+  
+  setIsRunning(true);
+  setIsFinished(false); // ← مطمئن شو finished false هست
+  setisDisable(false);
 
-    setIsRunning(true);
     const startTime = Date.now() - time;
 
     intervalRef.current = setInterval(() => {
@@ -50,18 +57,20 @@ setTimeout(() => {
   };
 
 
-  const stopTimer = () => {
-    clearInterval(intervalRef.current);
-    setIsRunning(false);
-    setisDisable(true)
-  };
-
-  const resetTimer = () => {
-    clearInterval(intervalRef.current);
-    setIsRunning(false);
-    setTime(0);
-    generateNewWord();
-  };
+const stopTimer = () => {
+  clearInterval(intervalRef.current);
+  setIsRunning(false);
+  setisDisable(true);
+};
+const resetTimer = () => {
+  clearInterval(intervalRef.current);
+  setIsRunning(false);
+  setIsFinished(false); // ← مهم
+  setTime(0);
+  setInputValue("");
+  generateNewWord();
+  setisDisable(true);
+};
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -76,6 +85,23 @@ setTimeout(() => {
   };
 
 
+
+useEffect(() => {
+
+inputValue.split("").map((letter, index) => {
+    if (letter === word[index]){
+       setColors("green");
+    } else{
+ setColors("red") ;
+    }
+  });
+if (inputValue === word && word !== "") {
+    stopTimer();
+    setIsFinished(true); // ← فقط finished رو true کن
+    // setIsRunning رو false کن (توی stopTimer انجام میشه)
+  }
+  
+}, [inputValue, word]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -100,7 +126,7 @@ setTimeout(() => {
   value={inputValue} 
   onChange={setInputValue}
   disabled={isDisable}
-  // disabled={!isRunning && !isFinished}
+  colors ={colors}
 />
 
         {/* ✅ دکمه‌ها - دریافت توابع به‌صورت props */}
