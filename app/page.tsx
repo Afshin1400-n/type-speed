@@ -11,10 +11,11 @@ export default function Home() {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
-   const focusRef = useRef(null);
+  const focusRef = useRef(null);
   const [word ,setWord] =useState("");
   const [inputValue ,setInputValue] =useState("");
   const [isDisable, setisDisable] = useState(true);
+  const [record, setRecord] = useState([]);
 
 
 
@@ -60,7 +61,6 @@ setTimeout(() => {
     setIsRunning(false);
     setTime(0);
     generateNewWord();
-    setisDisable(true)
   };
 
   const formatTime = (milliseconds) => {
@@ -150,28 +150,9 @@ setTimeout(() => {
               <span className="text-xs text-gray-400">دیروز</span>
             </div>
 
-            <div className="bg-gray-50/50 p-3 rounded-xl border border-gray-100 flex justify-between items-center opacity-60">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">۴</span>
-                <span className="font-semibold text-gray-600">۲۲ ثانیه</span>
-              </div>
-              <span className="text-sm text-gray-400">"سی‌شارپ"</span>
-              <span className="text-xs text-gray-300">۳ روز پیش</span>
-            </div>
-
-            <div className="bg-gray-50/50 p-3 rounded-xl border border-gray-100 flex justify-between items-center opacity-60">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">۵</span>
-                <span className="font-semibold text-gray-600">۲۵ ثانیه</span>
-              </div>
-              <span className="text-sm text-gray-400">"گو"</span>
-              <span className="text-xs text-gray-300">۴ روز پیش</span>
-            </div>
           </div>
 
-          <button className="w-full mt-3 text-xs text-gray-400 hover:text-red-500 hover:bg-red-50 py-2 rounded-lg transition-colors border border-dashed border-gray-200">
-            🗑 پاک کردن همه رکوردها
-          </button>
+      
         </div>
       </div>
     </div>
