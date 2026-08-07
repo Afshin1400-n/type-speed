@@ -5,6 +5,7 @@ import Timer from "./component/Timer";
 import Word from "./component/Word";
 import Input from "./component/Input";
 import { random } from 'word-lib';
+import { log } from "node:console";
 
 export default function Home() {
   // ✅ Stateها اینجا تعریف میشن
@@ -16,7 +17,7 @@ export default function Home() {
   const [word ,setWord] =useState("");
   const [inputValue ,setInputValue] =useState("");
   const [isDisable, setisDisable] = useState(true);
-  const [record, setRecord] = useState([]);
+  const [records, setRecords] = useState([]);
   const [colors, setColors] = useState("gray");
 
 
@@ -32,6 +33,8 @@ export default function Home() {
     setisDisable(true);
     setIsFinished(false);
     setIsRunning(false)
+    console.log(records);
+    
   }, []);
 
   // ✅ توابع کنترل تایمر اینجا تعریف میشن
@@ -84,7 +87,15 @@ const resetTimer = () => {
     )}.${String(centiseconds).padStart(2, "0")}`;
   };
 
-
+    const addRecord = (word, time) => {
+  const newRecord = {
+    id: Date.now(),
+    word: inputValue,
+    time: time,
+    date: new Date().toLocaleDateString("fa-IR")
+  };
+  setRecords([newRecord, ...records]); // ← جدیدترین اول
+};
 
 useEffect(() => {
 
@@ -97,8 +108,11 @@ inputValue.split("").map((letter, index) => {
   });
 if (inputValue === word && word !== "") {
     stopTimer();
-    setIsFinished(true); // ← فقط finished رو true کن
-    // setIsRunning رو false کن (توی stopTimer انجام میشه)
+    setIsFinished(true); 
+    
+    const timeInSeconds = time / 1000; // تبدیل میلی‌ثانیه به ثانیه
+    addRecord(word, timeInSeconds);
+    
   }
   
 }, [inputValue, word]);
@@ -139,47 +153,19 @@ if (inputValue === word && word !== "") {
         />
 
         {/* رکوردها */}
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-gray-800">🏆 رکوردها</h2>
-            <span className="text-xs text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
-              آخرین ۵
-            </span>
-          </div>
+        <div className="space-y-2 max-h-48 overflow-y-auto">
+  {records.map((record) => (
+    <div key={record.id} className="bg-gradient-to-r from-amber-50 to-amber-100/50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
+      <div className="flex items-center gap-2">
+        <span className="text-xl">🏆</span>
+        <span className="font-semibold text-gray-700">{record.time} ثانیه</span>
+      </div>
+      <span className="text-sm text-gray-500">"{record.word}"</span>
+      <span className="text-xs text-gray-400">{record.date}</span>
+    </div>
+  ))}
+</div>
 
-          <div className="space-y-2 max-h-48 overflow-y-auto">
-            {/* رکوردها (همون کد قبلی) */}
-            <div className="bg-gradient-to-r from-amber-50 to-amber-100/50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🥇</span>
-                <span className="font-semibold text-gray-700">۱۲ ثانیه</span>
-              </div>
-              <span className="text-sm text-gray-500">"پایتون"</span>
-              <span className="text-xs text-gray-400">امروز</span>
-            </div>
-
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 p-3 rounded-xl border border-gray-200 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🥈</span>
-                <span className="font-semibold text-gray-700">۱۵ ثانیه</span>
-              </div>
-              <span className="text-sm text-gray-500">"جاوااسکریپت"</span>
-              <span className="text-xs text-gray-400">دیروز</span>
-            </div>
-
-            <div className="bg-gradient-to-r from-orange-50 to-orange-100/50 p-3 rounded-xl border border-orange-200 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🥉</span>
-                <span className="font-semibold text-gray-700">۱۸ ثانیه</span>
-              </div>
-              <span className="text-sm text-gray-500">"ریکت"</span>
-              <span className="text-xs text-gray-400">دیروز</span>
-            </div>
-
-          </div>
-
-      
-        </div>
       </div>
     </div>
   );
