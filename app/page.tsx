@@ -20,7 +20,12 @@ export default function Home() {
   const [records, setRecords] = useState([]);
   const [colors, setColors] = useState([]);
 
-
+useEffect(() => {
+  // وقتی isDisable تغییر میکنه، فوکوس رو ریست کن
+  if (focusRef.current) {
+    focusRef.current.disabled = isDisable;
+  }
+}, [isDisable]);
 
  // تابع تولید کلمه جدید
   const generateNewWord = () => {
@@ -33,8 +38,7 @@ export default function Home() {
     setisDisable(true);
     setIsFinished(false);
     setIsRunning(false)
-    console.log(records);
-    
+
   }, []);
 
   // ✅ توابع کنترل تایمر اینجا تعریف میشن

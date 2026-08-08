@@ -2,6 +2,7 @@
 import { forwardRef } from "react";
 
 const Input = forwardRef(({ value, onChange, disabled, colors, word }, ref) => {
+    console.log("Input disabled:", disabled); // ← ب
   return (
     <div className="mb-6">
       <label className="text-gray-600 text-sm block mb-2">
