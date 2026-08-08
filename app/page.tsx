@@ -5,6 +5,7 @@ import Timer from "./component/Timer";
 import Word from "./component/Word";
 import Input from "./component/Input";
 import { random } from 'word-lib';
+import Records from "./component/Records";
 
 
 export default function Home() {
@@ -101,9 +102,7 @@ const resetTimer = () => {
   setRecords([newRecord, ...records]); // ← جدیدترین اول
 };
 
-const sortedRecords = useMemo(() => {
-  return [...records].sort((a, b) => a.time - b.time);
-}, [records]);
+
 
 useEffect(() => {
   const newColors = inputValue.split("").map((letter, index) => {
@@ -120,14 +119,13 @@ useEffect(() => {
   }
 }, [inputValue, word]);
 
-const topThreeRecords = useMemo(() => {
-  return sortedRecords.slice(0, 3);
-}, [sortedRecords]);
+
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20">
+    <div className="max-h-[100vh] overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 gap-8">
+      <div className=" ml-80 max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8
+       border border-white/20">
         {/* عنوان */}
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
           ⌨️ تایپ سریع
@@ -161,10 +159,14 @@ const topThreeRecords = useMemo(() => {
         
         />
 
-        {/* رکوردها */}
-
 
       </div>
+      
+        {/* رکوردها */}
+ <aside className="ml-20 w-80 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-4 border border-white/20 h-fit">
+  <h2 className="text-lg font-bold text-gray-700 mb-3 text-center">🏆 بهترین‌ها</h2>
+  <Records records={records} />
+</aside>
     </div>
   );
 }
