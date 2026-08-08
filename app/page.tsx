@@ -37,7 +37,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    generateNewWord(wordLength);
+    
     setIsDisable(true);
     setIsFinished(false);
     setIsRunning(false);
@@ -45,7 +45,7 @@ export default function Home() {
 
   const startTimer = () => {
     if (isRunning || isFinished) return;
-
+generateNewWord(wordLength)
     setIsRunning(true);
     setIsFinished(false);
     setIsDisable(false);
@@ -65,6 +65,7 @@ export default function Home() {
   const stopTimer = () => {
     clearInterval(intervalRef.current);
     setIsRunning(false);
+    setIsFinished(true)
     setIsDisable(true);
   };
 
@@ -74,7 +75,7 @@ export default function Home() {
     setIsFinished(false);
     setTime(0);
     setInputValue("");
-    generateNewWord(wordLength);
+    setWord("")
     setIsDisable(true);
   };
 
@@ -118,13 +119,13 @@ export default function Home() {
     const val = e.target.innerText.trim();
 
     if (val === "۳ حرفی") {
-      generateNewWord(3);
+      
       setWordLength(3);
     } else if (val === "۵ حرفی") {
-      generateNewWord(5);
+      
       setWordLength(5);
     } else if (val === "۷ حرفی") {
-      generateNewWord(7);
+     
       setWordLength(7);
     }
   };
@@ -132,7 +133,12 @@ export default function Home() {
   return (
     <div className="h-screen w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 gap-4">
       {/* Level - سمت چپ */}
-      <Level handleLenWord={handleLenWord} wordLength={wordLength} />
+<Level
+  handleLenWord={handleLenWord}
+  wordLength={wordLength}
+  isRunning={isRunning}
+  isFinished={isFinished}
+/>
 
       {/* بخش اصلی - وسط */}
       <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl
