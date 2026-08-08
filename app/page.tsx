@@ -20,6 +20,7 @@ export default function Home() {
   const [isDisable, setisDisable] = useState(true);
   const [records, setRecords] = useState([]);
   const [colors, setColors] = useState([]);
+  const [wordLength, setWordLength] = useState(3);
 
 useEffect(() => {
   // وقتی isDisable تغییر میکنه، فوکوس رو ریست کن
@@ -29,16 +30,20 @@ useEffect(() => {
 }, [isDisable]);
 
  // تابع تولید کلمه جدید
-  const generateNewWord = () => {
-    const newWord = random({ maxLength: 5 });
-    setWord(newWord);
-  };
+const generateNewWord = (len) => {
+  let newWord = random({ maxLength: len });
+  while (newWord.length !== len) {
+    newWord = random({ maxLength: len });
+  }
+  setWord(newWord);
+};
 
   useEffect(() => {
-    generateNewWord();
+    generateNewWord(3);
     setisDisable(true);
     setIsFinished(false);
-    setIsRunning(false)
+    setIsRunning(false);
+ setWordLength(3);
 
   }, []);
 
@@ -76,7 +81,7 @@ const resetTimer = () => {
   setIsFinished(false); // ← مهم
   setTime(0);
   setInputValue("");
-  generateNewWord();
+  generateNewWord(wordLength);
   setisDisable(true);
 };
 
@@ -119,11 +124,61 @@ useEffect(() => {
   }
 }, [inputValue, word]);
 
-
+const handleLenWord = (e) => {
+  const val = e.target.innerText.trim();
+  
+  if (val === "۳ حرفی") {
+    generateNewWord(3);
+    setWordLength(3)
+  } else if (val === "۵ حرفی") {
+    generateNewWord(5);
+    setWordLength(5)
+  } else if (val === "۷ حرفی") {
+    generateNewWord(7);
+    setWordLength(7)
+  }
+};
 
 
   return (
-    <div className="max-h-[100vh] overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 gap-8">
+    <div className="max-h-[100vh] overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center
+     justify-center p-1 gap-1">
+
+  <div className="flex gap-2 justify-center mb-4">
+  <button
+    onClick={(e) => handleLenWord(e)}
+    className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+      wordLength === 3
+        ? "bg-blue-600 text-white ring-2 ring-blue-400 ring-offset-2"
+        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+    }`}
+  >
+    ۳ حرفی
+  </button>
+
+  <button
+    onClick={(e) => handleLenWord(e)}
+    className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+      wordLength === 5
+        ? "bg-blue-600 text-white ring-2 ring-blue-400 ring-offset-2"
+        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+    }`}
+  >
+    ۵ حرفی
+  </button>
+
+  <button
+    onClick={(e) => handleLenWord(e)}
+    className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+      wordLength === 7
+        ? "bg-blue-600 text-white ring-2 ring-blue-400 ring-offset-2"
+        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+    }`}
+  >
+    ۷ حرفی
+  </button>
+</div>
+
       <div className=" ml-80 max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8
        border border-white/20">
         {/* عنوان */}
@@ -165,6 +220,8 @@ useEffect(() => {
   <h2 className="text-lg font-bold text-gray-700 mb-3 text-center">🏆 بهترین‌ها</h2>
   <Records records={records} />
 </aside>
+
+
     </div>
   );
 }
