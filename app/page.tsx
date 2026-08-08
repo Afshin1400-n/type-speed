@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo} from "react";
 import Btn from "./component/Btn";
 import Timer from "./component/Timer";
 import Word from "./component/Word";
@@ -97,6 +97,10 @@ const resetTimer = () => {
   setRecords([newRecord, ...records]); // ← جدیدترین اول
 };
 
+const sortedRecords = useMemo(() => {
+  return [...records].sort((a, b) => a.time - b.time);
+}, [records]);
+
 useEffect(() => {
 
 inputValue.split("").map((letter, index) => {
@@ -154,7 +158,7 @@ if (inputValue === word && word !== "") {
 
         {/* رکوردها */}
         <div className="space-y-2 max-h-48 overflow-y-auto">
-  {records.map((record) => (
+  {sortedRecords.map((record) => (
     <div key={record.id} className="bg-gradient-to-r from-amber-50 to-amber-100/50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
       <div className="flex items-center gap-2">
         <span className="text-xl">🏆</span>
