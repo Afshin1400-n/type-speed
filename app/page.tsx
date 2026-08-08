@@ -89,7 +89,7 @@ const resetTimer = () => {
     return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
       2,
       "0"
-    )}.${String(centiseconds).padStart(2, "0")}`;
+    )}:${String(centiseconds).padStart(2, "0")}`;
   };
 
   const addRecord = (word, time) => {
@@ -130,9 +130,7 @@ useEffect(() => {
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
           ⌨️ تایپ سریع
         </h1>
-        <p className="text-center text-gray-500 text-sm mb-6">
-          کلمه را در زمان مشخص تایپ کن!
-        </p>
+     
 
         {/* کلمه هدف */}
       <Word word={word}/>
