@@ -5,7 +5,7 @@ import Timer from "./component/Timer";
 import Word from "./component/Word";
 import Input from "./component/Input";
 import { random } from 'word-lib';
-import { log } from "node:console";
+
 
 export default function Home() {
   // ✅ Stateها اینجا تعریف میشن
@@ -18,7 +18,7 @@ export default function Home() {
   const [inputValue ,setInputValue] =useState("");
   const [isDisable, setisDisable] = useState(true);
   const [records, setRecords] = useState([]);
-  const [colors, setColors] = useState("gray");
+  const [colors, setColors] = useState([]);
 
 
 
@@ -87,7 +87,7 @@ const resetTimer = () => {
     )}.${String(centiseconds).padStart(2, "0")}`;
   };
 
-    const addRecord = (word, time) => {
+  const addRecord = (word, time) => {
   const newRecord = {
     id: Date.now(),
     word: inputValue,
@@ -102,23 +102,18 @@ const sortedRecords = useMemo(() => {
 }, [records]);
 
 useEffect(() => {
-
-inputValue.split("").map((letter, index) => {
-    if (letter === word[index]){
-       setColors("green");
-    } else{
- setColors("red") ;
-    }
+  const newColors = inputValue.split("").map((letter, index) => {
+    if (letter === word[index]) return "green";
+    return "red";
   });
-if (inputValue === word && word !== "") {
+  setColors(newColors);
+
+  if (inputValue === word && word !== "") {
     stopTimer();
-    setIsFinished(true); 
-    
-    const timeInSeconds = time / 1000; // تبدیل میلی‌ثانیه به ثانیه
+    setIsFinished(true);
+    const timeInSeconds = time / 1000;
     addRecord(word, timeInSeconds);
-    
   }
-  
 }, [inputValue, word]);
 
   return (
@@ -139,12 +134,13 @@ if (inputValue === word && word !== "") {
         <Timer time={time} formatTime={formatTime} />
 
         {/* اینپوت */}
-    <Input 
-    ref={focusRef} 
+<Input 
+  ref={focusRef} 
   value={inputValue} 
   onChange={setInputValue}
   disabled={isDisable}
-  colors ={colors}
+  colors={colors}
+  word={word}
 />
 
         {/* ✅ دکمه‌ها - دریافت توابع به‌صورت props */}
