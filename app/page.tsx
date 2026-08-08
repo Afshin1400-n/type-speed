@@ -120,6 +120,11 @@ useEffect(() => {
   }
 }, [inputValue, word]);
 
+const topThreeRecords = useMemo(() => {
+  return sortedRecords.slice(0, 3);
+}, [sortedRecords]);
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20">
@@ -157,18 +162,7 @@ useEffect(() => {
         />
 
         {/* رکوردها */}
-        <div className="space-y-2 max-h-48 overflow-y-auto">
-  {sortedRecords.map((record) => (
-    <div key={record.id} className="bg-gradient-to-r from-amber-50 to-amber-100/50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
-      <div className="flex items-center gap-2">
-        <span className="text-xl">🏆</span>
-        <span className="font-semibold text-gray-700">{record.time} ثانیه</span>
-      </div>
-      <span className="text-sm text-gray-500">"{record.word}"</span>
-      <span className="text-xs text-gray-400">{record.date}</span>
-    </div>
-  ))}
-</div>
+
 
       </div>
     </div>
