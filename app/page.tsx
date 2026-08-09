@@ -18,10 +18,35 @@ export default function Home() {
   const [word, setWord] = useState("؟");
   const [inputValue, setInputValue] = useState("");
   const [isDisable, setIsDisable] = useState(true);
-  const [records, setRecords] = useState([]);
   const [colors, setColors] = useState([]);
   const [wordLength, setWordLength] = useState(3);
   const [filterLength, setFilterLength] = useState(null);
+  
+  // مقداردهی اولیه records از localStorage
+const [records, setRecords] = useState(() => {
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem("records");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (error) {
+        console.error("خطا در parse کردن records:", error);
+      }
+    }
+  }
+  return [];
+});
+
+// فقط ذخیره‌سازی
+useEffect(() => {
+  if (records.length > 0) {
+    localStorage.setItem("records", JSON.stringify(records));
+  }
+}, [records]);
+
 
   useEffect(() => {
     if (focusRef.current) {
