@@ -12,6 +12,7 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();

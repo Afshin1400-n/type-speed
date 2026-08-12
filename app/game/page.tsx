@@ -26,6 +26,8 @@ export default function Home() {
   const [filterLength, setFilterLength] = useState(null);
   const [user, setUser] = useState(null);
   const router = useRouter();
+  
+  
 
 useEffect(() => {
   const currentUser = localStorage.getItem("currentUser");
@@ -81,7 +83,7 @@ useEffect(() => {
     setIsDisable(true);
     setIsFinished(false);
     setIsRunning(false);
-    generateNewWord(wordLength);
+   
   }, []);
 
   const startTimer = () => {
