@@ -18,12 +18,12 @@ const sortedRecords = useMemo(() => {
   }
 
   return (
-    <div className="space-y-3 max-full overflow-y-auto">
+    <div className="space-y-3 max-full overflow-y-auto mt-8">
       {topThree.map((record, index) => (
         <div
           key={record.id}
           className="bg-gradient-to-r from-amber-50 to-amber-100/50 p-4 rounded-xl border border-amber-200
-          flex items-center  gap-5"
+          flex items-center  gap-2"
         >
           <span className="text-2xl">
             {index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}
