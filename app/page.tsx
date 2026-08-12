@@ -18,35 +18,32 @@ export default function Home() {
   const [word, setWord] = useState("؟");
   const [inputValue, setInputValue] = useState("");
   const [isDisable, setIsDisable] = useState(true);
+  const [records, setRecords] = useState([]);
   const [colors, setColors] = useState([]);
   const [wordLength, setWordLength] = useState(3);
   const [filterLength, setFilterLength] = useState(null);
-  
-  // مقداردهی اولیه records از localStorage
-const [records, setRecords] = useState(() => {
-  if (typeof window !== "undefined") {
-    const saved = localStorage.getItem("records");
-    if (saved) {
+
+  // بارگذاری از localStorage
+  useEffect(() => {
+    const savedRecords = localStorage.getItem("records");
+    if (savedRecords) {
       try {
-        const parsed = JSON.parse(saved);
+        const parsed = JSON.parse(savedRecords);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          setRecords(parsed);
         }
       } catch (error) {
         console.error("خطا در parse کردن records:", error);
       }
     }
-  }
-  return [];
-});
+  }, []);
 
-// فقط ذخیره‌سازی
-useEffect(() => {
-  if (records.length > 0) {
-    localStorage.setItem("records", JSON.stringify(records));
-  }
-}, [records]);
-
+  // ذخیره در localStorage
+  useEffect(() => {
+    if (records.length > 0) {
+      localStorage.setItem("records", JSON.stringify(records));
+    }
+  }, [records]);
 
   useEffect(() => {
     if (focusRef.current) {
@@ -63,15 +60,15 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    
     setIsDisable(true);
     setIsFinished(false);
     setIsRunning(false);
+    generateNewWord(wordLength);
   }, []);
 
   const startTimer = () => {
     if (isRunning || isFinished) return;
-generateNewWord(wordLength)
+    generateNewWord(wordLength);
     setIsRunning(true);
     setIsFinished(false);
     setIsDisable(false);
@@ -91,7 +88,7 @@ generateNewWord(wordLength)
   const stopTimer = () => {
     clearInterval(intervalRef.current);
     setIsRunning(false);
-    setIsFinished(true)
+    setIsFinished(true);
     setIsDisable(true);
   };
 
@@ -101,7 +98,7 @@ generateNewWord(wordLength)
     setIsFinished(false);
     setTime(0);
     setInputValue("");
-    setWord("؟")
+    setWord("؟");
     setIsDisable(true);
   };
 
@@ -143,41 +140,30 @@ generateNewWord(wordLength)
 
   const handleLenWord = (e) => {
     const val = e.target.innerText.trim();
-
     if (val === "۳ حرفی") {
-      
       setWordLength(3);
     } else if (val === "۵ حرفی") {
-      
       setWordLength(5);
     } else if (val === "۷ حرفی") {
-     
       setWordLength(7);
     }
   };
 
   const filteredRecords = useMemo(() => {
-  if (filterLength === null) return records;
-  return records.filter((record) => record.word.length === filterLength);
-}, [records, filterLength]);
-
-
+    if (filterLength === null) return records;
+    return records.filter((record) => record.word.length === filterLength);
+  }, [records, filterLength]);
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center 
-    justify-center p-4 gap-4">
+    <div className="h-screen w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 gap-4">
+      <Level
+        handleLenWord={handleLenWord}
+        wordLength={wordLength}
+        isRunning={isRunning}
+        isFinished={isFinished}
+      />
 
-      {/* Level - سمت چپ */}
-<Level
-  handleLenWord={handleLenWord}
-  wordLength={wordLength}
-  isRunning={isRunning}
-  isFinished={isFinished}
-/>
-
-      {/* بخش اصلی - وسط */}
-      <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl
-       p-6 sm:p-8 border border-white/20 max-h-[90vh] ">
+      <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/20 max-h-[90vh] overflow-y-auto">
         <h1 className="text-2xl sm:text-2xl font-bold text-center text-gray-800 mb-2">
           ⌨️ تایپ سریع
         </h1>
@@ -185,8 +171,8 @@ generateNewWord(wordLength)
           کلمه را در زمان مشخص تایپ کن!
         </p>
 
-        <Word word={word} />
-        <Timer time={time} formatTime={formatTime} />
+        <Word word={word} suppressHydrationWarning />
+        <Timer time={time} formatTime={formatTime} suppressHydrationWarning />
         <Input
           ref={focusRef}
           value={inputValue}
@@ -194,6 +180,7 @@ generateNewWord(wordLength)
           disabled={isDisable}
           colors={colors}
           word={word}
+          suppressHydrationWarning
         />
         <Btn
           startTimer={startTimer}
@@ -203,55 +190,53 @@ generateNewWord(wordLength)
         />
       </div>
 
-      {/* رکوردها - سمت راست */}
-      <aside className="w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-4 
-      border border-white/20 h-fit max-h-[90vh] overflow-y-auto">
+      <aside className="w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-4 border border-white/20 h-fit max-h-[90vh] overflow-y-auto">
         <h2 className="text-lg font-bold text-gray-700 mb-3 text-center">
           🏆 بهترین‌ها
         </h2>
-        <div className="flex gap-2 justify-center mt-4">
-  <button
-    onClick={() => setFilterLength(null)}
-    className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
-      filterLength === null
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-    }`}
-  >
-    همه
-  </button>
-  <button
-    onClick={() => setFilterLength(3)}
-    className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
-      filterLength === 3
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-    }`}
-  >
-    ۳ حرفی
-  </button>
-  <button
-    onClick={() => setFilterLength(5)}
-    className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
-      filterLength === 5
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-    }`}
-  >
-    ۵ حرفی
-  </button>
-  <button
-    onClick={() => setFilterLength(7)}
-    className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
-      filterLength === 7
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-    }`}
-  >
-    ۷ حرفی
-  </button>
-</div>
-          <Records records={filteredRecords} />
+        <div className="flex gap-2 justify-center mt-4 flex-wrap">
+          <button
+            onClick={() => setFilterLength(null)}
+            className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+              filterLength === null
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            همه
+          </button>
+          <button
+            onClick={() => setFilterLength(3)}
+            className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+              filterLength === 3
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            ۳ حرفی
+          </button>
+          <button
+            onClick={() => setFilterLength(5)}
+            className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+              filterLength === 5
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            ۵ حرفی
+          </button>
+          <button
+            onClick={() => setFilterLength(7)}
+            className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+              filterLength === 7
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            ۷ حرفی
+          </button>
+        </div>
+        <Records records={filteredRecords} suppressHydrationWarning />
       </aside>
     </div>
   );
