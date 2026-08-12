@@ -42,26 +42,26 @@ const handleLogout = () => {
 
 
   // بارگذاری از localStorage
-  useEffect(() => {
-    const savedRecords = localStorage.getItem("records");
-    if (savedRecords) {
-      try {
-        const parsed = JSON.parse(savedRecords);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setRecords(parsed);
-        }
-      } catch (error) {
-        console.error("خطا در parse کردن records:", error);
+useEffect(() => {
+  if (!user) return;
+  const savedRecords = localStorage.getItem(`records_${user.username}`);
+  if (savedRecords) {
+    try {
+      const parsed = JSON.parse(savedRecords);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        setRecords(parsed);
       }
+    } catch (error) {
+      console.error("خطا در parse کردن records:", error);
     }
-  }, []);
+  }
+}, [user]);
 
   // ذخیره در localStorage
-  useEffect(() => {
-    if (records.length > 0) {
-      localStorage.setItem("records", JSON.stringify(records));
-    }
-  }, [records]);
+useEffect(() => {
+  if (!user || records.length === 0) return;
+  localStorage.setItem(`records_${user.username}`, JSON.stringify(records));
+}, [records, user]);
 
   useEffect(() => {
     if (focusRef.current) {
