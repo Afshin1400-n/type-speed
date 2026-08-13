@@ -21,7 +21,9 @@ function Profile({ user, handleLogout }: ProfileProps) {
       </span>
       <button
         onClick={handleLogout}
-        className="text-white/60 hover:text-red-400 hover:bg-red-500/20 rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 border border-white/10 hover:border-red-400/30"
+        className="text-white/60 hover:text-red-400 hover:bg-red-500/20
+         rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 border
+          border-white/10 hover:border-red-400/30 cursor-pointer"
       >
         🚪 خروج
       </button>

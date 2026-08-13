@@ -32,7 +32,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900
+     flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
           <div className="text-center mb-6">
@@ -89,7 +90,7 @@ export default function LoginPage() {
               className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 
               hover:from-purple-600 hover:to-pink-600 active:scale-95
               text-white font-bold rounded-xl transition-all duration-200 
-              shadow-md hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
+              shadow-md hover:shadow-lg disabled:opacity-40 cursor-pointer"
             >
               {loading ? "⏳ در حال ورود..." : "🚀 ورود"}
             </button>
