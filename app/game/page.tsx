@@ -29,8 +29,9 @@ export default function Home() {
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [isStop, setIsStop] = useState(false);
-    const [showModal, setShowModal] = useState(false); // ✅ state برای مودال
-  const [newRecordTime, setNewRecordTime] = useState(0); // ✅ زمان رکورد جدید
+  const [showModal, setShowModal] = useState(false);
+  const [newRecordTime, setNewRecordTime] = useState(0);
+  const [isNewRecord, setIsNewRecord] = useState(false); // ✅ برای تشخیص رکورد جدید
 
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
@@ -123,7 +124,8 @@ export default function Home() {
     setInputValue("");
     setWord("؟");
     setIsDisable(true);
-    setShowModal(false); // ✅ بستن مودال
+    setShowModal(false);
+    setIsNewRecord(false); // ✅ ریست کردن وضعیت رکورد جدید
   };
 
   const formatTime = (milliseconds) => {
@@ -163,24 +165,25 @@ export default function Home() {
       const bestTime = getBestTimeForLength(wordLength);
       addRecord(word, timeInSeconds, wordLength);
 
-       setNewRecordTime(timeInSeconds); // ✅ ذخیره زمان
+      setNewRecordTime(timeInSeconds);
 
+      // ✅ تشخیص رکورد جدید
       if (timeInSeconds < bestTime) {
-        setMessage(`🎉 رکورد جدید! ${timeInSeconds} ثانیه`);
-        setTimeout(() => setMessage(""), 3000);
+        setIsNewRecord(true);
+      } else {
+        setIsNewRecord(false);
       }
- // ✅ نمایش مودال بعد از 500ms
+
+      // ✅ نمایش مودال بعد از 500ms
       setTimeout(() => {
         setShowModal(true);
       }, 500);
-
     }
   }, [inputValue, word]);
 
-// در app/page.tsx
-const handleLenWord = (length) => {
-  setWordLength(length);
-};
+  const handleLenWord = (length) => {
+    setWordLength(length);
+  };
 
   const filteredRecords = useMemo(() => {
     if (filterLength === null) return records;
@@ -201,7 +204,7 @@ const handleLenWord = (length) => {
       </div>
 
       <div className="h-full w-full flex items-center justify-center pt-3">
-        <div className="w-full max-w-7xl max-h-7xl grid grid-cols-12 gap-5 ">
+        <div className="w-full max-w-7xl max-h-7xl grid grid-cols-12 gap-5">
           {/* Left Column - Level */}
           <div className="col-span-12 lg:col-span-2 flex lg:block items-center gap-3 mt-10">
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-3 border border-white/20 flex-1">
@@ -214,23 +217,23 @@ const handleLenWord = (length) => {
               />
             </div>
 
-            {/* Quick Stats - hidden on mobile, shown on desktop */}
-          <div className="hidden lg:block bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 mt-7">
-  <div className="text-center">
-    <div className="text-white/60 text-xl font-semibold uppercase tracking-wider mb-6">
-      📊 آمار سریع
-    </div>
-    <div className="space-y- text-white/80 text-lg">
-      <div>🔤 {records.length} کلمه</div>
-      <div>🏆 {records.length > 0 ? Math.min(...records.map(r => r.time)).toFixed(1) : "—"}s</div>
-    </div>
-  </div>
-</div>
+            {/* Quick Stats */}
+            <div className="hidden lg:block bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 mt-7">
+              <div className="text-center">
+                <div className="text-white/60 text-xl font-semibold uppercase tracking-wider mb-6">
+                  📊 آمار سریع
+                </div>
+                <div className="space-y- text-white/80 text-lg">
+                  <div>🔤 {records.length} کلمه</div>
+                  <div>🏆 {records.length > 0 ? Math.min(...records.map(r => r.time)).toFixed(1) : "—"}s</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Center - Main Game */}
           <div className="col-span-12 lg:col-span-7">
-            <div className="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-4 border border-white/20 ">
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-4 border border-white/20">
               <div className="text-center mb-5">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
                   ⌨️ تایپ سریع
@@ -243,18 +246,11 @@ const handleLenWord = (length) => {
                   <Word word={word} suppressHydrationWarning />
                 </div>
 
-                {/* Timer & Message Row */}
+                {/* Timer */}
                 <div className="flex items-center gap-3">
                   <div className="flex-1 bg-black/30 rounded-lg p-2 backdrop-blur-sm border border-white/10">
                     <Timer time={time} formatTime={formatTime} suppressHydrationWarning />
                   </div>
-                  {message && (
-                    <div className="flex-1">
-                      <span className="block text-center px-3 py-1.5 bg-gradient-to-r from-green-400 to-emerald-400 text-white font-bold rounded-lg text-xs animate-pulse shadow-lg">
-                        {message}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 {/* Input */}
@@ -294,7 +290,7 @@ const handleLenWord = (length) => {
               <div className="flex gap-4 justify-center mb-10 flex-wrap">
                 <button
                   onClick={() => setFilterLength(null)}
-                  className={`px-2 py-0.5 rounded-md text-xl cursor-pointer  font-semibold transition-all ${
+                  className={`px-2 py-0.5 rounded-md text-xl cursor-pointer font-semibold transition-all ${
                     filterLength === null
                       ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
                       : "bg-white/10 text-white/60 hover:bg-white/20 backdrop-blur-sm border border-white/10"
@@ -314,7 +310,7 @@ const handleLenWord = (length) => {
                 </button>
                 <button
                   onClick={() => setFilterLength(5)}
-                  className={`px-2 py-0.5 rounded-md text-xl cursor-pointer  font-semibold transition-all ${
+                  className={`px-2 py-0.5 rounded-md text-xl cursor-pointer font-semibold transition-all ${
                     filterLength === 5
                       ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
                       : "bg-white/10 text-white/60 hover:bg-white/20 backdrop-blur-sm border border-white/10"
@@ -324,7 +320,7 @@ const handleLenWord = (length) => {
                 </button>
                 <button
                   onClick={() => setFilterLength(7)}
-                  className={`px-2 py-0.5 rounded-md text-xl cursor-pointer  font-semibold transition-all ${
+                  className={`px-2 py-0.5 rounded-md text-xl cursor-pointer font-semibold transition-all ${
                     filterLength === 7
                       ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
                       : "bg-white/10 text-white/60 hover:bg-white/20 backdrop-blur-sm border border-white/10"
@@ -335,18 +331,18 @@ const handleLenWord = (length) => {
               </div>
 
               <Records records={filteredRecords} suppressHydrationWarning />
-
-               {/* ✅ Success Modal */}
-
             </div>
           </div>
         </div>
       </div>
-            <SuccessModal 
+
+      {/* ✅ Success Modal */}
+      <SuccessModal 
         isOpen={showModal} 
         onClose={resetTimer} 
         time={newRecordTime} 
         word={word}
+        isNewRecord={isNewRecord}
       />
     </div>
   );

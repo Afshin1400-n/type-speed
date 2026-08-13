@@ -1,12 +1,23 @@
 // component/SuccessModal.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-export default function SuccessModal({ isOpen, onClose, time, word }) {
+interface SuccessModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  time: number;
+  word: string;
+  isNewRecord?: boolean;
+}
+
+export default function SuccessModal({ isOpen, onClose, time, word, isNewRecord = false }: SuccessModalProps) {
+  const okButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      setTimeout(() => okButtonRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = "unset";
     }
@@ -28,18 +39,36 @@ export default function SuccessModal({ isOpen, onClose, time, word }) {
           تبریک! 🥳
         </h2>
 
-        <div className="text-center text-white/80 space-y-2 mb-6">
+        <div className="text-center text-white/80 space-y-3 mb-6">
           <p className="text-lg">کلمه رو درست تایپ کردی!</p>
+          
           <p className="text-sm text-white/60">
             کلمه: <span className="text-white font-bold">&quot;{word}&quot;</span>
           </p>
+          
           <p className="text-sm text-white/60">
             زمان: <span className="text-green-400 font-bold">{time.toFixed(2)}</span> ثانیه
           </p>
+
+          {/* ✅ پیام رکورد جدید */}
+          {isNewRecord && (
+            <div className="mt-4">
+              <span className="inline-block px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold rounded-full text-sm animate-pulse shadow-lg">
+                🏆 رکورد جدید! {time.toFixed(2)} ثانیه
+              </span>
+            </div>
+          )}
         </div>
 
         <button
+          ref={okButtonRef}
           onClick={onClose}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              onClose();
+            }
+          }}
           autoFocus
           className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 
           hover:from-purple-600 hover:to-pink-600 active:scale-95
