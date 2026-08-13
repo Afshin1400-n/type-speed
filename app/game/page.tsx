@@ -10,6 +10,7 @@ import Records from "../component/Records";
 import Level from "../component/Level";
 import { useRouter } from "next/navigation";
 import Profile from "../component/Profile";
+import SuccessModal from "../component/SuccessModal";
 
 export default function Home() {
   const [time, setTime] = useState(0);
@@ -28,6 +29,8 @@ export default function Home() {
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [isStop, setIsStop] = useState(false);
+    const [showModal, setShowModal] = useState(false); // ✅ state برای مودال
+  const [newRecordTime, setNewRecordTime] = useState(0); // ✅ زمان رکورد جدید
 
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
@@ -120,6 +123,7 @@ export default function Home() {
     setInputValue("");
     setWord("؟");
     setIsDisable(true);
+    setShowModal(false); // ✅ بستن مودال
   };
 
   const formatTime = (milliseconds) => {
@@ -159,10 +163,17 @@ export default function Home() {
       const bestTime = getBestTimeForLength(wordLength);
       addRecord(word, timeInSeconds, wordLength);
 
+       setNewRecordTime(timeInSeconds); // ✅ ذخیره زمان
+
       if (timeInSeconds < bestTime) {
         setMessage(`🎉 رکورد جدید! ${timeInSeconds} ثانیه`);
         setTimeout(() => setMessage(""), 3000);
       }
+ // ✅ نمایش مودال بعد از 500ms
+      setTimeout(() => {
+        setShowModal(true);
+      }, 500);
+
     }
   }, [inputValue, word]);
 
@@ -324,10 +335,19 @@ const handleLenWord = (length) => {
               </div>
 
               <Records records={filteredRecords} suppressHydrationWarning />
+
+               {/* ✅ Success Modal */}
+
             </div>
           </div>
         </div>
       </div>
+            <SuccessModal 
+        isOpen={showModal} 
+        onClose={resetTimer} 
+        time={newRecordTime} 
+        word={word}
+      />
     </div>
   );
 }

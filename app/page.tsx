@@ -21,7 +21,7 @@ export default function LoginPage() {
 
     if (user) {
       localStorage.setItem("currentUser", JSON.stringify(user));
-      router.push("game");
+      router.push("/game");
     } else {
       setError("نام کاربری یا رمز عبور اشتباه است");
       setTimeout(() => {
