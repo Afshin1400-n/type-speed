@@ -215,12 +215,12 @@ const handleLenWord = (length) => {
             </div>
 
             {/* Quick Stats - hidden on mobile, shown on desktop */}
-          <div className="hidden lg:block bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 mt-3">
+          <div className="hidden lg:block bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 mt-7">
   <div className="text-center">
     <div className="text-white/60 text-xl font-semibold uppercase tracking-wider mb-6">
       📊 آمار سریع
     </div>
-    <div className="space-y-3 text-white/80 text-lg">
+    <div className="space-y- text-white/80 text-lg">
       <div>🔤 {records.length} کلمه</div>
       <div>🏆 {records.length > 0 ? Math.min(...records.map(r => r.time)).toFixed(1) : "—"}s</div>
     </div>

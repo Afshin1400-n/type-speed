@@ -40,6 +40,7 @@ export default function SuccessModal({ isOpen, onClose, time, word }) {
 
         <button
           onClick={onClose}
+          autoFocus
           className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 
           hover:from-purple-600 hover:to-pink-600 active:scale-95
           text-white font-bold rounded-xl transition-all duration-200 

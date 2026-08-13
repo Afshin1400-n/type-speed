@@ -6,6 +6,7 @@ function Btn({ startTimer, stopTimer, resetTimer, isRunning }) {
       <button
         onClick={startTimer}
         disabled={isRunning}
+      
         className="flex-1 px-3 py-2 bg-gradient-to-r from-green-400 to-emerald-400 
           hover:from-green-500 hover:to-emerald-500 active:scale-95 
           text-white font-bold text-lg rounded-lg
