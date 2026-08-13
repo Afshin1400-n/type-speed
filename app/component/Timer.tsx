@@ -2,10 +2,8 @@
 
 function Timer({ time, formatTime }) {
   return (
-    <div className="text-center mb-6">
-      <span className="text-gray-500 text-md block mb-1">⏱️ زمان</span>
-      <div className="text-3xl font-mono font-bold text-indigo-600 bg-indigo-50 
-      rounded-xl py-3 px-4 inline-block min-w-[150px]">
+    <div className="text-center mt-2 mb-2">
+      <div className="font-mono font-bold text-2xl text-white/90 tracking-wider">
         {formatTime(time)}
       </div>
     </div>
