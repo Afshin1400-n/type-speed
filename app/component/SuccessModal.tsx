@@ -1,4 +1,3 @@
-// component/SuccessModal.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -50,7 +49,6 @@ export default function SuccessModal({ isOpen, onClose, time, word, isNewRecord 
             زمان: <span className="text-green-400 font-bold">{time.toFixed(2)}</span> ثانیه
           </p>
 
-          {/* ✅ پیام رکورد جدید */}
           {isNewRecord && (
             <div className="mt-4">
               <span className="inline-block px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold rounded-full text-sm animate-pulse shadow-lg">

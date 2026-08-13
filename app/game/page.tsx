@@ -12,26 +12,40 @@ import { useRouter } from "next/navigation";
 import Profile from "../component/Profile";
 import SuccessModal from "../component/SuccessModal";
 
+// 🔹 تعریف تایپ‌ها
+interface User {
+  username: string;
+  password: string;
+}
+
+interface Record {
+  id: number;
+  word: string;
+  time: number;
+  date: string;
+  length: number;
+}
+
 export default function Home() {
-  const [time, setTime] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const intervalRef = useRef(null);
-  const focusRef = useRef(null);
-  const [word, setWord] = useState("؟");
-  const [inputValue, setInputValue] = useState("");
-  const [isDisable, setIsDisable] = useState(true);
-  const [records, setRecords] = useState([]);
-  const [colors, setColors] = useState([]);
-  const [wordLength, setWordLength] = useState(3);
-  const [filterLength, setFilterLength] = useState(null);
-  const [user, setUser] = useState(null);
+  const [time, setTime] = useState<number>(0);
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const focusRef = useRef<HTMLInputElement | null>(null);
+  const [word, setWord] = useState<string>("؟");
+  const [inputValue, setInputValue] = useState<string>("");
+  const [isDisable, setIsDisable] = useState<boolean>(true);
+  const [records, setRecords] = useState<Record[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
+  const [wordLength, setWordLength] = useState<number>(3);
+  const [filterLength, setFilterLength] = useState<number | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-  const [message, setMessage] = useState("");
-  const [isStop, setIsStop] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [newRecordTime, setNewRecordTime] = useState(0);
-  const [isNewRecord, setIsNewRecord] = useState(false); // ✅ برای تشخیص رکورد جدید
+  const [message, setMessage] = useState<string>("");
+  const [isStop, setIsStop] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [newRecordTime, setNewRecordTime] = useState<number>(0);
+  const [isNewRecord, setIsNewRecord] = useState<boolean>(false);
 
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
@@ -40,7 +54,7 @@ export default function Home() {
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     localStorage.removeItem("currentUser");
     router.push("/");
   };
@@ -50,7 +64,7 @@ export default function Home() {
     const savedRecords = localStorage.getItem(`records_${user.username}`);
     if (savedRecords) {
       try {
-        const parsed = JSON.parse(savedRecords);
+        const parsed: Record[] = JSON.parse(savedRecords);
         if (Array.isArray(parsed) && parsed.length > 0) {
           setRecords(parsed);
         }
@@ -71,7 +85,7 @@ export default function Home() {
     }
   }, [isDisable]);
 
-  const generateNewWord = (len) => {
+  const generateNewWord = (len: number): void => {
     let newWord = random({ maxLength: len });
     while (newWord.length !== len) {
       newWord = random({ maxLength: len });
@@ -85,7 +99,7 @@ export default function Home() {
     setIsRunning(false);
   }, []);
 
-  const startTimer = () => {
+  const startTimer = (): void => {
     if (isRunning || isFinished) return;
 
     if (word === "؟") {
@@ -108,15 +122,19 @@ export default function Home() {
     }, 50);
   };
 
-  const stopTimer = () => {
-    clearInterval(intervalRef.current);
+  const stopTimer = (): void => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
     setIsRunning(false);
     setIsStop(true);
     setIsDisable(true);
   };
 
-  const resetTimer = () => {
-    clearInterval(intervalRef.current);
+  const resetTimer = (): void => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
     setIsStop(false);
     setIsRunning(false);
     setIsFinished(false);
@@ -125,10 +143,10 @@ export default function Home() {
     setWord("؟");
     setIsDisable(true);
     setShowModal(false);
-    setIsNewRecord(false); // ✅ ریست کردن وضعیت رکورد جدید
+    setIsNewRecord(false);
   };
 
-  const formatTime = (milliseconds) => {
+  const formatTime = (milliseconds: number): string => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
@@ -139,8 +157,8 @@ export default function Home() {
     )}.${String(centiseconds).padStart(2, "0")}`;
   };
 
-  const addRecord = (word, time, length) => {
-    const newRecord = {
+  const addRecord = (word: string, time: number, length: number): void => {
+    const newRecord: Record = {
       id: Date.now(),
       word: word,
       time: time,
@@ -167,30 +185,28 @@ export default function Home() {
 
       setNewRecordTime(timeInSeconds);
 
-      // ✅ تشخیص رکورد جدید
       if (timeInSeconds < bestTime) {
         setIsNewRecord(true);
       } else {
         setIsNewRecord(false);
       }
 
-      // ✅ نمایش مودال بعد از 500ms
       setTimeout(() => {
         setShowModal(true);
       }, 500);
     }
   }, [inputValue, word]);
 
-  const handleLenWord = (length) => {
+  const handleLenWord = (length: number): void => {
     setWordLength(length);
   };
 
-  const filteredRecords = useMemo(() => {
+  const filteredRecords = useMemo((): Record[] => {
     if (filterLength === null) return records;
     return records.filter((record) => record.word.length === filterLength);
   }, [records, filterLength]);
 
-  const getBestTimeForLength = (length) => {
+  const getBestTimeForLength = (length: number): number => {
     const filtered = records.filter((r) => r.length === length);
     if (filtered.length === 0) return Infinity;
     return Math.min(...filtered.map((r) => r.time));
@@ -198,14 +214,12 @@ export default function Home() {
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
-      {/* Profile - Top Left */}
       <div className="absolute top-3 left-3 z-50">
         <Profile user={user} handleLogout={handleLogout} />
       </div>
 
       <div className="h-full w-full flex items-center justify-center pt-3">
         <div className="w-full max-w-7xl max-h-7xl grid grid-cols-12 gap-5">
-          {/* Left Column - Level */}
           <div className="col-span-12 lg:col-span-2 flex lg:block items-center gap-3 mt-10">
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-3 border border-white/20 flex-1">
               <Level
@@ -217,7 +231,6 @@ export default function Home() {
               />
             </div>
 
-            {/* Quick Stats */}
             <div className="hidden lg:block bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 mt-7">
               <div className="text-center">
                 <div className="text-white/60 text-xl font-semibold uppercase tracking-wider mb-6">
@@ -231,7 +244,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Center - Main Game */}
           <div className="col-span-12 lg:col-span-7">
             <div className="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-4 border border-white/20">
               <div className="text-center mb-5">
@@ -241,19 +253,16 @@ export default function Home() {
               </div>
 
               <div className="space-y-3">
-                {/* Word Display */}
                 <div className="bg-black/30 rounded-lg p-4 backdrop-blur-sm border border-white/10">
                   <Word word={word} suppressHydrationWarning />
                 </div>
 
-                {/* Timer */}
                 <div className="flex items-center gap-3">
                   <div className="flex-1 bg-black/30 rounded-lg p-2 backdrop-blur-sm border border-white/10">
                     <Timer time={time} formatTime={formatTime} suppressHydrationWarning />
                   </div>
                 </div>
 
-                {/* Input */}
                 <div className="bg-black/30 rounded-lg p-2 backdrop-blur-sm border border-white/10">
                   <Input
                     ref={focusRef}
@@ -266,7 +275,6 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Buttons */}
                 <div className="bg-black/30 rounded-lg p-2 backdrop-blur-sm border border-white/10">
                   <Btn
                     startTimer={startTimer}
@@ -279,14 +287,12 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right - Records */}
           <div className="col-span-12 lg:col-span-3">
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-3 border border-white/20 h-full max-h-[calc(100vh-6rem)] overflow-y-auto">
               <h2 className="text-2xl font-bold text-center mb-10 bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
                 🏆 رکوردها
               </h2>
 
-              {/* Filter Buttons */}
               <div className="flex gap-4 justify-center mb-10 flex-wrap">
                 <button
                   onClick={() => setFilterLength(null)}
@@ -336,7 +342,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ✅ Success Modal */}
       <SuccessModal 
         isOpen={showModal} 
         onClose={resetTimer} 
