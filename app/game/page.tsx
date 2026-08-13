@@ -90,10 +90,10 @@ useEffect(() => {
   }, []);
 
 const startTimer = () => {
-  if (isRunning) return;
+  if (isRunning || isFinished) return;
 
   // ✅ فقط اگه کلمه "؟" هست یا بازی تموم شده، کلمه جدید تولید کن
-  if (word === "؟" || isFinished) {
+  if (word === "؟") {
     generateNewWord(wordLength);
   }
   
