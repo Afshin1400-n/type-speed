@@ -87,7 +87,7 @@ useEffect(() => {
   }, []);
 
   const startTimer = () => {
-    if (isRunning || isFinished) return;
+    if (isRunning && isFinished) return;
     generateNewWord(wordLength);
     setIsRunning(true);
     setIsFinished(false);

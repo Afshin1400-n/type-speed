@@ -142,7 +142,7 @@ export default function RegisterPage() {
 
         <p className="text-center text-gray-500 text-sm mt-6">
           قبلاً ثبت‌نام کردید؟{" "}
-          <Link href="/login" className="text-blue-600 hover:underline font-medium">
+          <Link href="/" className="text-blue-600 hover:underline font-medium">
             ورود
           </Link>
         </p>
