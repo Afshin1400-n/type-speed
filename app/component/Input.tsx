@@ -12,7 +12,7 @@ interface InputProps {
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ value, onChange, disabled, colors, word }, ref) => {
     return (
-      <div className="space-y-2">
+      <div className="space-y-5">
         <div className="flex gap-1 justify-center">
           {word.split("").map((letter, index) => (
             <span
@@ -39,8 +39,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           disabled={disabled}
           className="w-full px-4 py-2.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg 
           text-white/90 text-center text-lg outline-none transition-all duration-200
-          placeholder:text-white/30 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20
-          disabled:opacity-40 disabled:cursor-not-allowed"
+          placeholder:text-white/80 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20
+          disabled:opacity-80 disabled:cursor-not-allowed"
         />
       </div>
     );

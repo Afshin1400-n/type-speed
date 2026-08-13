@@ -12,7 +12,8 @@ export default function Level({ handleLenWord, wordLength, isRunning, isFinished
   const isDisabled = isRunning || isFinished || isStop;
 
   return (
-    <div className="flex flex-col items-center gap-2 bg-white/10 backdrop-blur-lg rounded-2xl px-4 py-3 border border-white/20">
+    <div className="flex flex-col items-center gap-2 bg-white/10 backdrop-blur-lg 
+    rounded-2xl px-4 py-3 border border-white/20">
       <span className="text-white/70 text-lg font-medium">📏 طول کلمه</span>
       <div className="flex flex-col gap-1.5 w-full">
         <button

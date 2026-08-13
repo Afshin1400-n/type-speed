@@ -7,7 +7,7 @@ interface TimerProps {
 function Timer({ time, formatTime }: TimerProps) {
   return (
     <div className="text-center">
-      <div className="font-mono font-bold text-2xl text-white/90 tracking-wider">
+      <div className="font-mono font-bold text-3xl text-white/90 tracking-wider mt-2">
         {formatTime(time)}
       </div>
     </div>
