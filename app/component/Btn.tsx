@@ -1,14 +1,16 @@
 "use client";
 
-function Btn({ startTimer, stopTimer, resetTimer, isRunning ,isFinished }) {
+function Btn({ startTimer, stopTimer, resetTimer, isRunning }) {
   return (
-    <div className="grid grid-cols-3 gap-3 mb-8">
+    <div className="flex gap-3">
       <button
         onClick={startTimer}
-        disabled={isRunning || isFinished}
-        className="bg-green-500 hover:bg-green-600 active:scale-95 
-          text-white font-bold py-3 px-4 rounded-xl
-          transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={isRunning}
+        className="flex-1 px-3 py-2 bg-gradient-to-r from-green-400 to-emerald-400 
+          hover:from-green-500 hover:to-emerald-500 active:scale-95 
+          text-white font-bold text-sm rounded-lg
+          transition-all duration-200 shadow-md hover:shadow-lg 
+          disabled:opacity-40 cursor-pointer  disabled:hover:shadow-md"
       >
         ▶ شروع
       </button>
@@ -16,18 +18,22 @@ function Btn({ startTimer, stopTimer, resetTimer, isRunning ,isFinished }) {
       <button
         onClick={stopTimer}
         disabled={!isRunning}
-        className="bg-yellow-500 hover:bg-yellow-600 active:scale-95 
-          text-white font-bold py-3 px-4 rounded-xl 
-          transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex-1 px-3 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 
+          hover:from-yellow-500 hover:to-orange-500 active:scale-95 
+          text-white font-bold text-sm rounded-lg
+          transition-all duration-200 shadow-md hover:shadow-lg 
+          disabled:opacity-40 cursor-pointer disabled:hover:shadow-md"
       >
         ⏸ توقف
       </button>
 
       <button
+      style={{ cursor: "pointer" }}
         onClick={resetTimer}
-        className="bg-red-500 hover:bg-red-600 active:scale-95 
-          text-white font-bold py-3 px-4 rounded-xl 
-          transition-all shadow-md hover:shadow-lg"
+        className="flex-1 px-3 py-2 bg-gradient-to-r from-red-400 to-rose-400 
+          hover:from-red-500 hover:to-rose-500 active:scale-95 
+          text-white font-bold text-sm rounded-lg
+          transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer "
       >
         🔄 ریست
       </button>

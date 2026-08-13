@@ -12,7 +12,6 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +19,6 @@ export default function RegisterPage() {
     setError("");
     setSuccess(false);
 
-    // اعتبارسنجی
     if (!username.trim() || !password.trim()) {
       setError("همه فیلدها را پر کنید");
       setLoading(false);
@@ -39,17 +37,14 @@ export default function RegisterPage() {
       return;
     }
 
-    // گرفتن کاربران موجود از localStorage
     const users = JSON.parse(localStorage.getItem("users") || "[]");
 
-    // چک کردن تکراری نبودن نام کاربری
     if (users.find(u => u.username === username)) {
       setError("این نام کاربری قبلاً ثبت شده است");
       setLoading(false);
       return;
     }
 
-    // ذخیره کاربر جدید
     const newUser = { username, password };
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
@@ -57,95 +52,107 @@ export default function RegisterPage() {
     setSuccess(true);
     setLoading(false);
 
-    // بعد از ۲ ثانیه به صفحه ورود برو
     setTimeout(() => {
       router.push("/");
     }, 2000);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 w-full max-w-md border border-white/20">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
-          📝 ثبت‌نام
-        </h1>
-        <p className="text-center text-gray-500 text-sm mb-6">
-          حساب کاربری جدید بسازید
-        </p>
-
-        {success ? (
-          <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-xl text-green-600 text-center">
-            ✅ ثبت‌نام با موفقیت انجام شد!
-            <br />
-            <span className="text-sm">در حال انتقال به صفحه ورود...</span>
+    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              📝 ثبت‌نام
+            </h1>
+            <p className="text-purple-200/70 text-sm mt-2 cursor-pointer">
+              حساب کاربری جدید بسازید
+            </p>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                نام کاربری
-              </label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="نام کاربری خود را انتخاب کنید..."
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all outline-none text-gray-700"
-                required
-              />
-            </div>
 
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                رمز عبور
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="رمز عبور خود را وارد کنید..."
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all outline-none text-gray-700"
-                required
-                minLength={4}
-              />
+          {success ? (
+            <div className="mb-4 p-4 bg-gradient-to-r from-green-400/20 to-emerald-400/20 border border-green-400/30 rounded-xl text-green-400 text-center backdrop-blur-sm">
+              <div className="font-bold">✅ ثبت‌نام با موفقیت انجام شد!</div>
+              <div className="text-sm text-green-400/70 mt-1">در حال انتقال به صفحه ورود...</div>
             </div>
-
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                تکرار رمز عبور
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="رمز عبور را دوباره وارد کنید..."
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all outline-none text-gray-700"
-                required
-              />
-            </div>
-
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm text-center">
-                ❌ {error}
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-purple-200/80 text-sm font-medium mb-2">
+                  نام کاربری
+                </label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="نام کاربری خود را انتخاب کنید..."
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
+                  focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
+                  text-white/90 placeholder:text-white/30 transition-all"
+                  required
+                />
               </div>
-            )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "⏳ در حال ثبت‌نام..." : "🚀 ثبت‌نام"}
-            </button>
-          </form>
-        )}
+              <div>
+                <label className="block text-purple-200/80 text-sm font-medium mb-2">
+                  رمز عبور
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="رمز عبور خود را وارد کنید..."
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
+                  focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
+                  text-white/90 placeholder:text-white/30 transition-all"
+                  required
+                  minLength={4}
+                />
+              </div>
 
-        <p className="text-center text-gray-500 text-sm mt-6">
-          قبلاً ثبت‌نام کردید؟{" "}
-          <Link href="/" className="text-blue-600 hover:underline font-medium">
-            ورود
-          </Link>
-        </p>
+              <div>
+                <label className="block text-purple-200/80 text-sm font-medium mb-2">
+                  تکرار رمز عبور
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="رمز عبور را دوباره وارد کنید..."
+                  className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
+                  focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
+                  text-white/90 placeholder:text-white/30 transition-all"
+                  required
+                />
+              </div>
+
+              {error && (
+                <div className="p-3 bg-red-500/20 border border-red-400/30 rounded-xl text-red-400 text-sm text-center">
+                  ❌ {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full cursor-pointer py-3 bg-gradient-to-r from-purple-500 to-pink-500 
+                hover:from-purple-600 hover:to-pink-600 active:scale-95
+                text-white font-bold rounded-xl transition-all duration-200 
+                shadow-md hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed "
+              >
+                {loading ? "⏳ در حال ثبت‌نام..." : "🚀 ثبت‌نام"}
+              </button>
+            </form>
+          )}
+
+          <p className="text-center text-purple-200/60 text-sm mt-6">
+            قبلاً ثبت‌نام کردید؟{" "}
+            <Link href="/" className="text-purple-400 hover:text-purple-300 font-medium transition-colors
+            ">
+              ورود
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

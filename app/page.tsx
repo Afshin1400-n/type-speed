@@ -16,7 +16,6 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    // گرفتن کاربران از localStorage
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     const user = users.find(u => u.username === username && u.password === password);
 
@@ -24,75 +23,85 @@ export default function LoginPage() {
       localStorage.setItem("currentUser", JSON.stringify(user));
       router.push("game");
     } else {
-     setError("نام کاربری یا رمز عبور اشتباه است");
+      setError("نام کاربری یا رمز عبور اشتباه است");
       setTimeout(() => {
-setError("")     
- }, 2000);
+        setError("")     
+      }, 2000);
     }
     setLoading(false);
-   
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-8 w-full max-w-md border border-white/20">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
-          🔐 ورود
-        </h1>
-        <p className="text-center text-gray-500 text-sm mb-6">
-          برای ادامه وارد شوید
-        </p>
-
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              نام کاربری
-            </label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="نام کاربری خود را وارد کنید..."
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all outline-none text-gray-700"
-              required
-            />
+    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              🔐 ورود
+            </h1>
+            <p className="text-purple-200/70 text-sm mt-2">
+              برای ادامه وارد شوید
+            </p>
           </div>
 
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              رمز عبور
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="رمز عبور خود را وارد کنید..."
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all outline-none text-gray-700"
-              required
-            />
-          </div>
-
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm text-center">
-              ❌ {error}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-purple-200/80 text-sm font-medium mb-2">
+                نام کاربری
+              </label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="نام کاربری خود را وارد کنید..."
+                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
+                focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
+                text-white/90 placeholder:text-white/30 transition-all"
+                required
+              />
             </div>
-          )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "⏳ در حال ورود..." : "🚀 ورود"}
-          </button>
-        </form>
+            <div>
+              <label className="block text-purple-200/80 text-sm font-medium mb-2">
+                رمز عبور
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="رمز عبور خود را وارد کنید..."
+                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
+                focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
+                text-white/90 placeholder:text-white/30 transition-all"
+                required
+              />
+            </div>
 
-        <p className="text-center text-gray-500 text-sm mt-6">
-          حساب کاربری ندارید؟{" "}
-          <Link href="/register" className="text-blue-600 hover:underline font-medium">
-            ثبت‌نام
-          </Link>
-        </p>
+            {error && (
+              <div className="p-3 bg-red-500/20 border border-red-400/30 rounded-xl text-red-400 text-sm text-center">
+                ❌ {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 
+              hover:from-purple-600 hover:to-pink-600 active:scale-95
+              text-white font-bold rounded-xl transition-all duration-200 
+              shadow-md hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {loading ? "⏳ در حال ورود..." : "🚀 ورود"}
+            </button>
+          </form>
+
+          <p className="text-center text-purple-200/60 text-sm mt-6">
+            حساب کاربری ندارید؟{" "}
+            <Link href="/register" className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
+              ثبت‌نام
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

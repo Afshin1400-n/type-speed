@@ -1,40 +1,40 @@
 "use client";
 
-export default function Level({ handleLenWord, wordLength, isRunning, isFinished,isStop }) {
+export default function Level({ handleLenWord, wordLength, isRunning, isFinished, isStop }) {
+  const isDisabled = isRunning || isFinished || isStop;
+
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 w-32 h-fit">
-      <h3 className="text-sm font-bold text-gray-700 mb-3">📏 طول کلمه</h3>
-      <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col items-center gap-2 bg-white/10 backdrop-blur-lg
+     rounded-2xl px-4 py-3 border border-white/20 ">
+      <span className="text-white/70 text-xl font-medium"> طول کلمه</span>
+      <div className="flex flex-col gap-1.5 w-full">
         <button
-          onClick={handleLenWord}
-          disabled={isRunning || isFinished || isStop}
-          className={`px-4 py-2 rounded-lg text-sm font-semibold transition w-full ${
+          onClick={() => !isDisabled && handleLenWord(3)}
+          className={`px-4 py-2 rounded-lg text-lg font-semibold transition-all duration-200 cursor-pointer w-full ${
             wordLength === 3
-              ? "bg-blue-600 text-white ring-2 ring-blue-400 ring-offset-2"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+              ? "bg-gradient-to-r from-purple-400 to-pink-400 text-white shadow-lg"
+              : "text-white/60 hover:text-white hover:bg-white/10"
+          } ${isDisabled ? "opacity-40" : ""}`}
         >
           ۳ حرفی
         </button>
         <button
-          onClick={handleLenWord}
-          disabled={isRunning || isFinished || isStop}
-          className={`px-4 py-2 rounded-lg text-sm font-semibold transition w-full ${
+          onClick={() => !isDisabled && handleLenWord(5)}
+          className={`px-4 py-2 rounded-lg text-lg font-semibold transition-all duration-200 cursor-pointer w-full ${
             wordLength === 5
-              ? "bg-blue-600 text-white ring-2 ring-blue-400 ring-offset-2"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+              ? "bg-gradient-to-r from-purple-400 to-pink-400 text-white shadow-lg"
+              : "text-white/60 hover:text-white hover:bg-white/10"
+          } ${isDisabled ? "opacity-40" : ""}`}
         >
           ۵ حرفی
         </button>
         <button
-          onClick={handleLenWord}
-          disabled={isRunning || isFinished || isStop}
-          className={`px-4 py-2 rounded-lg text-sm font-semibold transition w-full ${
+          onClick={() => !isDisabled && handleLenWord(7)}
+          className={`px-4 py-2 rounded-lg text-lg font-semibold transition-all duration-200 cursor-pointer w-full ${
             wordLength === 7
-              ? "bg-blue-600 text-white ring-2 ring-blue-400 ring-offset-2"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+              ? "bg-gradient-to-r from-purple-400 to-pink-400 text-white shadow-lg"
+              : "text-white/60 hover:text-white hover:bg-white/10"
+          } ${isDisabled ? "opacity-40" : ""}`}
         >
           ۷ حرفی
         </button>
