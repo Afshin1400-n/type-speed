@@ -26,6 +26,9 @@ export default function Home() {
   const [filterLength, setFilterLength] = useState(null);
   const [user, setUser] = useState(null);
   const router = useRouter();
+  const [message, setMessage] = useState("");
+  const [isStop, setIsStop] = useState(false);
+  
   
   
 
@@ -86,41 +89,47 @@ useEffect(() => {
    
   }, []);
 
-  const startTimer = () => {
-    if (isRunning && isFinished) return;
+const startTimer = () => {
+  if (isRunning) return;
+
+  // ✅ فقط اگه کلمه "؟" هست یا بازی تموم شده، کلمه جدید تولید کن
+  if (word === "؟" || isFinished) {
     generateNewWord(wordLength);
-    setIsRunning(true);
-    setIsFinished(false);
-    setIsDisable(false);
+  }
+  
+  setIsRunning(true);
+  setIsFinished(false); // ← این مهمه!
+  setIsDisable(false);
 
-    const startTime = Date.now() - time;
-    intervalRef.current = setInterval(() => {
-      setTime(Date.now() - startTime);
-    }, 10);
+  const startTime = Date.now() - time;
+  intervalRef.current = setInterval(() => {
+    setTime(Date.now() - startTime);
+  }, 10);
 
-    setTimeout(() => {
-      if (focusRef.current) {
-        focusRef.current.focus();
-      }
-    }, 50);
-  };
+  setTimeout(() => {
+    if (focusRef.current) {
+      focusRef.current.focus();
+    }
+  }, 50);
+};
 
   const stopTimer = () => {
     clearInterval(intervalRef.current);
     setIsRunning(false);
-    setIsFinished(true);
+    setIsStop(true)
     setIsDisable(true);
   };
 
-  const resetTimer = () => {
-    clearInterval(intervalRef.current);
-    setIsRunning(false);
-    setIsFinished(false);
-    setTime(0);
-    setInputValue("");
-    setWord("؟");
-    setIsDisable(true);
-  };
+const resetTimer = () => {
+  clearInterval(intervalRef.current);
+  setIsStop(false)
+  setIsRunning(false);
+  setIsFinished(false); // ← درسته
+  setTime(0);
+  setInputValue("");
+  setWord("؟");
+  setIsDisable(true);
+};
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -133,30 +142,37 @@ useEffect(() => {
     )}.${String(centiseconds).padStart(2, "0")}`;
   };
 
-  const addRecord = (word, time) => {
-    const newRecord = {
-      id: Date.now(),
-      word: word,
-      time: time,
-      date: new Date().toLocaleDateString("fa-IR"),
-    };
-    setRecords([newRecord, ...records]);
+const addRecord = (word, time, length) => {
+  const newRecord = {
+    id: Date.now(),
+    word: word,
+    time: time,
+    date: new Date().toLocaleDateString("fa-IR"),
+    length: length,
   };
+  setRecords([newRecord, ...records]);
+};
+useEffect(() => {
+  const newColors = inputValue.split("").map((letter, index) => {
+    if (letter === word[index]) return "green";
+    return "red";
+  });
+  setColors(newColors);
 
-  useEffect(() => {
-    const newColors = inputValue.split("").map((letter, index) => {
-      if (letter === word[index]) return "green";
-      return "red";
-    });
-    setColors(newColors);
-
-    if (inputValue === word && word !== "") {
-      stopTimer();
-      setIsFinished(true);
-      const timeInSeconds = time / 1000;
-      addRecord(word, timeInSeconds);
+  if (inputValue === word && word !== "") {
+    stopTimer();
+    setIsFinished(true);
+    const timeInSeconds = time / 1000;
+    
+    const bestTime = getBestTimeForLength(wordLength);
+    addRecord(word, timeInSeconds, wordLength);
+    
+    if (timeInSeconds < bestTime) {
+      setMessage(`🎉 رکورد جدید! ${timeInSeconds} ثانیه`);
+      setTimeout(() => setMessage(""), 3000);
     }
-  }, [inputValue, word]);
+  }
+}, [inputValue, word]);
 
   const handleLenWord = (e) => {
     const val = e.target.innerText.trim();
@@ -174,6 +190,13 @@ useEffect(() => {
     return records.filter((record) => record.word.length === filterLength);
   }, [records, filterLength]);
 
+const getBestTimeForLength = (length) => {
+  const filtered = records.filter(r => r.length === length);
+  if (filtered.length === 0) return Infinity;
+  return Math.min(...filtered.map(r => r.time));
+};
+
+
   return (
     <div className="h-screen w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center
      justify-center p-4 gap-4">
@@ -186,6 +209,7 @@ useEffect(() => {
         wordLength={wordLength}
         isRunning={isRunning}
         isFinished={isFinished}
+        isStop={isStop}
       />
 
       <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 sm:p-8 border border-white/20 max-h-[90vh] overflow-y-auto">
@@ -198,6 +222,11 @@ useEffect(() => {
 
         <Word word={word} suppressHydrationWarning />
         <Timer time={time} formatTime={formatTime} suppressHydrationWarning />
+        {message && (
+  <div className="text-center text-green-600 font-bold text-lg animate-pulse my-2">
+    {message}
+  </div>
+)}
         <Input
           ref={focusRef}
           value={inputValue}
