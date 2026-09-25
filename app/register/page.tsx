@@ -20,19 +20,19 @@ export default function RegisterPage() {
     setSuccess(false);
 
     if (!username.trim() || !password.trim()) {
-      setError("همه فیلدها را پر کنید");
+      setError("Please fill in all fields");
       setLoading(false);
       return;
     }
 
     if (password.length < 4) {
-      setError("رمز عبور باید حداقل ۴ کاراکتر باشد");
+      setError("Password must be at least 4 characters");
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("رمز عبور و تکرار آن مطابقت ندارند");
+      setError("Passwords do not match");
       setLoading(false);
       return;
     }
@@ -40,7 +40,7 @@ export default function RegisterPage() {
     const users = JSON.parse(localStorage.getItem("users") || "[]");
 
     if (users.find(u => u.username === username)) {
-      setError("این نام کاربری قبلاً ثبت شده است");
+      setError("This username is already taken");
       setLoading(false);
       return;
     }
@@ -63,29 +63,29 @@ export default function RegisterPage() {
         <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
           <div className="text-center mb-6">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              📝 ثبت‌نام
+              📝 Sign Up
             </h1>
             <p className="text-purple-200/70 text-sm mt-2 cursor-pointer">
-              حساب کاربری جدید بسازید
+              Create a new account
             </p>
           </div>
 
           {success ? (
             <div className="mb-4 p-4 bg-gradient-to-r from-green-400/20 to-emerald-400/20 border border-green-400/30 rounded-xl text-green-400 text-center backdrop-blur-sm">
-              <div className="font-bold">✅ ثبت‌نام با موفقیت انجام شد!</div>
-              <div className="text-sm text-green-400/70 mt-1">در حال انتقال به صفحه ورود...</div>
+              <div className="font-bold">✅ Registration successful!</div>
+              <div className="text-sm text-green-400/70 mt-1">Redirecting to login...</div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-purple-200/80 text-sm font-medium mb-2">
-                  نام کاربری
+                  Username
                 </label>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="نام کاربری خود را انتخاب کنید..."
+                  placeholder="Choose your username..."
                   className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
                   focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
                   text-white/90 placeholder:text-white/30 transition-all"
@@ -95,13 +95,13 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-purple-200/80 text-sm font-medium mb-2">
-                  رمز عبور
+                  Password
                 </label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="رمز عبور خود را وارد کنید..."
+                  placeholder="Enter your password..."
                   className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
                   focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
                   text-white/90 placeholder:text-white/30 transition-all"
@@ -112,13 +112,13 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-purple-200/80 text-sm font-medium mb-2">
-                  تکرار رمز عبور
+                  Confirm Password
                 </label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="رمز عبور را دوباره وارد کنید..."
+                  placeholder="Re-enter your password..."
                   className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl 
                   focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 outline-none 
                   text-white/90 placeholder:text-white/30 transition-all"
@@ -140,16 +140,16 @@ export default function RegisterPage() {
                 text-white font-bold rounded-xl transition-all duration-200 
                 shadow-md hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed "
               >
-                {loading ? "⏳ در حال ثبت‌نام..." : "🚀 ثبت‌نام"}
+                {loading ? "⏳ Signing up..." : "🚀 Sign Up"}
               </button>
             </form>
           )}
 
           <p className="text-center text-purple-200/60 text-sm mt-6">
-            قبلاً ثبت‌نام کردید؟{" "}
+            Already have an account?{" "}
             <Link href="/" className="text-purple-400 hover:text-purple-300 font-medium transition-colors
             ">
-              ورود
+              Sign In
             </Link>
           </p>
         </div>

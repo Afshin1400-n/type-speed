@@ -23,7 +23,7 @@ function Records({ records }: RecordsProps) {
   if (topThree.length === 0) {
     return (
       <div className="text-center text-white/40 text-sm py-8">
-        📭 هنوز رکوردی ثبت نشده است
+        📭 No records yet
       </div>
     );
   }

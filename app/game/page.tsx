@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import Profile from "../component/Profile";
 import SuccessModal from "../component/SuccessModal";
 
-// 🔹 تعریف تایپ‌ها
+// 🔹 Type definitions
 interface User {
   username: string;
   password: string;
@@ -69,7 +69,7 @@ export default function Home() {
           setRecords(parsed);
         }
       } catch (error) {
-        console.error("خطا در parse کردن records:", error);
+        console.error("Error parsing records:", error);
       }
     }
   }, [user]);
@@ -162,7 +162,7 @@ export default function Home() {
       id: Date.now(),
       word: word,
       time: time,
-      date: new Date().toLocaleDateString("fa-IR"),
+      date: new Date().toLocaleDateString("en-US"),
       length: length,
     };
     setRecords([newRecord, ...records]);
@@ -234,10 +234,10 @@ export default function Home() {
             <div className="hidden lg:block bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 mt-7">
               <div className="text-center">
                 <div className="text-white/60 text-xl font-semibold uppercase tracking-wider mb-6">
-                  📊 آمار سریع
+                  📊 Quick Stats
                 </div>
                 <div className="space-y- text-white/80 text-lg">
-                  <div>🔤 {records.length} کلمه</div>
+                  <div>🔤 {records.length} words</div>
                   <div>🏆 {records.length > 0 ? Math.min(...records.map(r => r.time)).toFixed(1) : "—"}s</div>
                 </div>
               </div>
@@ -248,7 +248,7 @@ export default function Home() {
             <div className="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-4 border border-white/20">
               <div className="text-center mb-5">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                  ⌨️ تایپ سریع
+                  ⌨️ Speed Typing
                 </h1>
               </div>
 
@@ -290,7 +290,7 @@ export default function Home() {
           <div className="col-span-12 lg:col-span-3">
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-3 border border-white/20 h-full max-h-[calc(100vh-6rem)] overflow-y-auto">
               <h2 className="text-2xl font-bold text-center mb-10 bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                🏆 رکوردها
+                🏆 Records
               </h2>
 
               <div className="flex gap-4 justify-center mb-10 flex-wrap">
@@ -302,7 +302,7 @@ export default function Home() {
                       : "bg-white/10 text-white/60 hover:bg-white/20 backdrop-blur-sm border border-white/10"
                   }`}
                 >
-                  همه
+                  All
                 </button>
                 <button
                   onClick={() => setFilterLength(3)}
@@ -312,7 +312,7 @@ export default function Home() {
                       : "bg-white/10 text-white/60 hover:bg-white/20 backdrop-blur-sm border border-white/10"
                   }`}
                 >
-                  ۳
+                  3
                 </button>
                 <button
                   onClick={() => setFilterLength(5)}
@@ -322,7 +322,7 @@ export default function Home() {
                       : "bg-white/10 text-white/60 hover:bg-white/20 backdrop-blur-sm border border-white/10"
                   }`}
                 >
-                  ۵
+                  5
                 </button>
                 <button
                   onClick={() => setFilterLength(7)}
@@ -332,7 +332,7 @@ export default function Home() {
                       : "bg-white/10 text-white/60 hover:bg-white/20 backdrop-blur-sm border border-white/10"
                   }`}
                 >
-                  ۷
+                  7
                 </button>
               </div>
 

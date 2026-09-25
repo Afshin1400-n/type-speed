@@ -19,7 +19,7 @@ function Btn({ startTimer, stopTimer, resetTimer, isRunning }: BtnProps) {
           transition-all duration-200 shadow-md hover:shadow-lg 
           disabled:opacity-40 cursor-pointer disabled:hover:shadow-md"
       >
-        ▶ شروع
+        ▶ Start
       </button>
 
       <button
@@ -31,7 +31,7 @@ function Btn({ startTimer, stopTimer, resetTimer, isRunning }: BtnProps) {
           transition-all duration-200 shadow-md hover:shadow-lg 
           disabled:opacity-40 cursor-pointer disabled:hover:shadow-md"
       >
-        ⏸ توقف
+        ⏸ Stop
       </button>
 
       <button
@@ -41,7 +41,7 @@ function Btn({ startTimer, stopTimer, resetTimer, isRunning }: BtnProps) {
           text-white font-bold text-lg rounded-lg
           transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer"
       >
-        🔄 ریست
+        🔄 Reset
       </button>
     </div>
   );

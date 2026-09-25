@@ -14,7 +14,7 @@ export default function Level({ handleLenWord, wordLength, isRunning, isFinished
   return (
     <div className="flex flex-col items-center gap-2 bg-white/10 backdrop-blur-lg 
     rounded-2xl px-4 py-3 border border-white/20">
-      <span className="text-white/70 text-lg font-medium">📏 طول کلمه</span>
+      <span className="text-white/70 text-lg font-medium">📏 Word Length</span>
       <div className="flex flex-col gap-1.5 w-full">
         <button
           onClick={() => !isDisabled && handleLenWord(3)}
@@ -24,7 +24,7 @@ export default function Level({ handleLenWord, wordLength, isRunning, isFinished
               : "text-white/60 hover:text-white hover:bg-white/10"
           } ${isDisabled ? "opacity-40" : ""}`}
         >
-          ۳ حرفی
+          3 Letters
         </button>
         <button
           onClick={() => !isDisabled && handleLenWord(5)}
@@ -34,7 +34,7 @@ export default function Level({ handleLenWord, wordLength, isRunning, isFinished
               : "text-white/60 hover:text-white hover:bg-white/10"
           } ${isDisabled ? "opacity-40" : ""}`}
         >
-          ۵ حرفی
+          5 Letters
         </button>
         <button
           onClick={() => !isDisabled && handleLenWord(7)}
@@ -44,7 +44,7 @@ export default function Level({ handleLenWord, wordLength, isRunning, isFinished
               : "text-white/60 hover:text-white hover:bg-white/10"
           } ${isDisabled ? "opacity-40" : ""}`}
         >
-          ۷ حرفی
+          7 Letters
         </button>
       </div>
     </div>

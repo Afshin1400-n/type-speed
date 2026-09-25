@@ -17,7 +17,7 @@ function Profile({ user, handleLogout }: ProfileProps) {
         {user?.username?.charAt(0).toUpperCase() || "?"}
       </div>
       <span className="text-white/90 text-sm font-medium truncate max-w-[100px]">
-        {user?.username || "مهمان"}
+        {user?.username || "Guest"}
       </span>
       <button
         onClick={handleLogout}
@@ -25,7 +25,7 @@ function Profile({ user, handleLogout }: ProfileProps) {
          rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 border
           border-white/10 hover:border-red-400/30 cursor-pointer"
       >
-        🚪 خروج
+        🚪 Logout
       </button>
     </div>
   );

@@ -35,7 +35,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="کلمه را تایپ کن..."
+          placeholder="Type the word..."
           disabled={disabled}
           className="w-full px-4 py-2.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg 
           text-white/90 text-center text-lg outline-none transition-all duration-200

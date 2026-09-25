@@ -35,24 +35,24 @@ export default function SuccessModal({ isOpen, onClose, time, word, isNewRecord 
         </div>
 
         <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent mb-2">
-          تبریک! 🥳
+          Congratulations! 🥳
         </h2>
 
         <div className="text-center text-white/80 space-y-3 mb-6">
-          <p className="text-lg">کلمه رو درست تایپ کردی!</p>
+          <p className="text-lg">You typed the word correctly!</p>
           
           <p className="text-sm text-white/60">
-            کلمه: <span className="text-white font-bold">&quot;{word}&quot;</span>
+            Word: <span className="text-white font-bold">&quot;{word}&quot;</span>
           </p>
           
           <p className="text-sm text-white/60">
-            زمان: <span className="text-green-400 font-bold">{time.toFixed(2)}</span> ثانیه
+            Time: <span className="text-green-400 font-bold">{time.toFixed(2)}</span> seconds
           </p>
 
           {isNewRecord && (
             <div className="mt-4">
               <span className="inline-block px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold rounded-full text-sm animate-pulse shadow-lg">
-                🏆 رکورد جدید! {time.toFixed(2)} ثانیه
+                🏆 New Record! {time.toFixed(2)} seconds
               </span>
             </div>
           )}
@@ -73,7 +73,7 @@ export default function SuccessModal({ isOpen, onClose, time, word, isNewRecord 
           text-white font-bold rounded-xl transition-all duration-200 
           shadow-md hover:shadow-lg cursor-pointer"
         >
-          ✅ اوکی، بازی جدید!
+          ✅ OK, New Game!
         </button>
       </div>
     </div>
