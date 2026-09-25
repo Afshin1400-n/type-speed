@@ -24,13 +24,6 @@ Test your typing speed, beat your records, and challenge yourself with words of 
 
 ---
 
-## 🚀 Demo
-
-> Add a screenshot or GIF here
-> 
-> `![Game Screenshot](./public/screenshot.png)`
-
----
 
 ## 🛠️ Tech Stack
 
